@@ -1,1075 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Otto x Mike - Project Showcase</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Otto Project Showcase</title>
   <style>
-    :root {
-      --bg: #06060c;
-      --bg-soft: #0a0a0f;
-      --card: #0d0d14;
-      --text: #e9e9f3;
-      --muted: #9aa0b5;
-      --border: rgba(255, 255, 255, 0.08);
-      --creative: #f5a623;
-      --ai: #b46aff;
-      --web: #4ae0e0;
-      --showcase: #50dc78;
-      --radius: 16px;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Menlo", monospace;
-      background:
-        radial-gradient(circle at 18% -5%, rgba(180, 106, 255, 0.2), transparent 40%),
-        radial-gradient(circle at 88% -5%, rgba(74, 224, 224, 0.2), transparent 42%),
-        linear-gradient(180deg, var(--bg-soft), var(--bg));
-      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0d0d1f 100%);
+      color: #e4e4e7;
       min-height: 100vh;
-      line-height: 1.45;
-      overflow-x: hidden;
+      padding: 2rem 1rem;
     }
-
-    .shell {
-      width: min(1280px, 92vw);
-      margin: 0 auto;
-      padding: 26px 0 48px;
-    }
-
-    .hero {
-      position: relative;
-      padding: 34px 28px;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, var(--creative), var(--ai), var(--web), var(--showcase));
-      opacity: 0.22;
-      transform: translateX(-60%);
-      animation: heroGlow 11s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes heroGlow {
-      0% { transform: translateX(-65%); }
-      50% { transform: translateX(0%); }
-      100% { transform: translateX(65%); }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    h1 {
-      font-size: clamp(1.7rem, 3.3vw, 2.7rem);
-      letter-spacing: 0.02em;
-      margin-bottom: 8px;
-    }
-
-    .subhead {
-      color: var(--muted);
-      max-width: 760px;
-      font-size: 0.96rem;
-      margin-bottom: 20px;
-    }
-
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .stat-card {
-      background: rgba(7, 7, 14, 0.75);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-    }
-
-    .stat-label {
-      color: var(--muted);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .stat-value {
-      margin-top: 7px;
-      font-size: clamp(1.25rem, 2vw, 1.8rem);
-      color: #fff;
-      text-shadow: 0 0 18px rgba(180, 106, 255, 0.35);
-      font-weight: 600;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
-      align-items: center;
-      margin: 18px 0;
-    }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .filter-btn,
-    .toggle-btn,
-    .link-btn {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--text);
-      padding: 8px 12px;
-      font: inherit;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .filter-btn:hover,
-    .toggle-btn:hover,
-    .link-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .filter-btn[data-category="creative"] { color: var(--creative); }
-    .filter-btn[data-category="ai"] { color: var(--ai); }
-    .filter-btn[data-category="web"] { color: var(--web); }
-    .filter-btn[data-category="showcase"] { color: var(--showcase); }
-
-    .filter-btn.active[data-category="creative"] { background: rgba(245, 166, 35, 0.16); border-color: rgba(245, 166, 35, 0.45); }
-    .filter-btn.active[data-category="ai"] { background: rgba(180, 106, 255, 0.16); border-color: rgba(180, 106, 255, 0.45); }
-    .filter-btn.active[data-category="web"] { background: rgba(74, 224, 224, 0.16); border-color: rgba(74, 224, 224, 0.45); }
-    .filter-btn.active[data-category="showcase"] { background: rgba(80, 220, 120, 0.16); border-color: rgba(80, 220, 120, 0.45); }
-
-    .toggle-btn.active {
-      background: rgba(180, 106, 255, 0.12);
-      border-color: rgba(180, 106, 255, 0.45);
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .card {
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--ai);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)), var(--card);
-      border-radius: var(--radius);
-      padding: 14px;
-      cursor: pointer;
-      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
-      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.24);
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.36);
-      border-color: rgba(255, 255, 255, 0.17);
-    }
-
-    .card.cat-creative { border-left-color: var(--creative); }
-    .card.cat-ai { border-left-color: var(--ai); }
-    .card.cat-web { border-left-color: var(--web); }
-    .card.cat-showcase { border-left-color: var(--showcase); }
-
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .title {
-      display: flex;
-      gap: 8px;
-      align-items: baseline;
-      font-weight: 600;
-      font-size: 1.02rem;
-    }
-
-    .tagline {
-      color: var(--muted);
-      font-size: 0.82rem;
-      margin-bottom: 8px;
-    }
-
-    .desc {
-      font-size: 0.84rem;
-      color: #d7daf0;
-      margin-bottom: 10px;
-      min-height: 72px;
-    }
-
-    .badge-row,
-    .tech-row,
-    .stats-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-
-    .badge,
-    .tech {
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 3px 8px;
-      font-size: 0.7rem;
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .status {
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-size: 0.68rem;
-      font-weight: 600;
-      border-radius: 999px;
-      padding: 4px 8px;
-      border: 1px solid;
-      white-space: nowrap;
-    }
-
-    .status.live { color: #7dffab; border-color: rgba(125, 255, 171, 0.45); background: rgba(125, 255, 171, 0.12); }
-    .status.in-progress { color: #ffd77b; border-color: rgba(255, 215, 123, 0.45); background: rgba(255, 215, 123, 0.12); }
-    .status.research { color: #8ec5ff; border-color: rgba(142, 197, 255, 0.45); background: rgba(142, 197, 255, 0.12); }
-    .status.paused { color: #c3c7d6; border-color: rgba(195, 199, 214, 0.45); background: rgba(195, 199, 214, 0.12); }
-
-    .progress-wrap {
-      margin-bottom: 10px;
-    }
-
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .progress {
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      overflow: hidden;
-    }
-
-    .progress > span {
-      display: block;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, rgba(180,106,255,0.7), rgba(74,224,224,0.8));
-      width: 0;
-      transition: width 700ms ease;
-    }
-
-    .stat-pill {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 5px 8px;
-      font-size: 0.7rem;
-      color: #dce0f5;
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .highlight {
-      font-size: 0.78rem;
-      color: #fff;
-      padding: 8px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-      margin-bottom: 10px;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .link-btn.disabled {
-      opacity: 0.45;
-      pointer-events: none;
-    }
-
-    .expand {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-height 350ms ease, opacity 250ms ease;
-      border-top: 1px solid transparent;
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    .card.expanded .expand {
-      max-height: 460px;
-      opacity: 1;
-      margin-top: 8px;
-      border-top-color: var(--border);
-      padding-top: 10px;
-    }
-
-    .detail-label {
-      color: var(--muted);
-      font-size: 0.72rem;
-      margin-bottom: 2px;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-
-    .detail-text {
-      font-size: 0.78rem;
-      margin-bottom: 8px;
-      color: #d8dbef;
-    }
-
-    .pipeline {
-      font-size: 0.74rem;
-      color: #fff;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .timeline {
-      display: none;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      background: var(--card);
-      margin-top: 8px;
-    }
-
-    .timeline.visible { display: block; }
-
-    .time-item {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 12px;
-      padding: 9px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .time-item:last-child { border-bottom: none; }
-
-    .time-date {
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    .time-body {
-      border-left: 2px solid rgba(255,255,255,0.2);
-      padding-left: 10px;
-    }
-
-    .time-title {
-      font-size: 0.88rem;
-      margin-bottom: 3px;
-    }
-
-    .time-summary {
-      font-size: 0.78rem;
-      color: #d4d8ef;
-    }
-
-    footer {
-      margin-top: 16px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--card);
-      padding: 14px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .footer-cell {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.02);
-      font-size: 0.78rem;
-    }
-
-    .footer-k {
-      color: var(--muted);
-      margin-bottom: 4px;
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .footer-v {
-      font-size: 1rem;
-      color: #fff;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 450ms ease, transform 450ms ease;
-    }
-
-    .reveal.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .empty {
-      border: 1px dashed rgba(255, 255, 255, 0.2);
-      color: var(--muted);
-      border-radius: 12px;
-      padding: 20px;
+    .container { max-width: 1400px; margin: 0 auto; }
+    header {
       text-align: center;
-      grid-column: 1 / -1;
+      padding: 3rem 1rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(168,85,247,0.1) 100%);
+      border-radius: 24px;
+      margin-bottom: 3rem;
+      border: 1px solid rgba(99,102,241,0.2);
     }
-
-    @media (max-width: 1200px) {
-      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .stat-row, footer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    h1 { font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(90deg, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { color: #a1a1aa; font-size: 1.25rem; margin-bottom: 2rem; }
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
     }
-
-    @media (max-width: 800px) {
-      .cards { grid-template-columns: 1fr; }
-      .stat-row, footer { grid-template-columns: 1fr; }
-      .controls { flex-direction: column; align-items: flex-start; }
-      .time-item { grid-template-columns: 1fr; }
-      .time-body { border-left: none; padding-left: 0; }
+    .stat { text-align: center; }
+    .stat-value { font-size: 2.5rem; font-weight: bold; color: #6366f1; }
+    .stat-label { color: #71717a; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .category { margin-bottom: 3rem; }
+    .category h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(99,102,241,0.3);
+      color: #c4b5fd;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: rgba(24,24,39,0.8);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(99,102,241,0.15);
+      border-color: rgba(99,102,241,0.4);
+    }
+    .project-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .project-emoji { font-size: 2rem; }
+    .project-title-wrap h3 { font-size: 1.25rem; color: #f4f4f5; margin-bottom: 0.25rem; }
+    .tagline { color: #a1a1aa; font-size: 0.875rem; }
+    .description { color: #d4d4d8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
+    .progress-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin-bottom: 0.75rem; }
+    .progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s ease; }
+    .project-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .status-badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+    .progress-text { color: #71717a; font-size: 0.875rem; font-weight: 600; }
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+    .tech { background: rgba(99,102,241,0.15); color: #a5b4fc; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; }
+    .highlight { background: linear-gradient(90deg, rgba(251,191,36,0.1), rgba(245,158,11,0.1)); border-left: 3px solid #f59e0b; padding: 0.5rem 0.75rem; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #fcd34d; margin-bottom: 1rem; }
+    .links { display: flex; gap: 0.75rem; margin-bottom: 1rem; }
+    .link { text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500; transition: opacity 0.2s; }
+    .link:hover { opacity: 0.8; }
+    .link.live { background: #3b82f6; color: white; }
+    .link.repo { background: rgba(255,255,255,0.1); color: #d4d4d8; border: 1px solid rgba(255,255,255,0.2); }
+    .stats { display: flex; gap: 1rem; font-size: 0.75rem; color: #71717a; }
+    footer { text-align: center; padding: 2rem; color: #71717a; font-size: 0.875rem; }
+    .last-updated { color: #52525b; }
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .stats-bar { gap: 1.5rem; }
     }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <section class="hero reveal">
-      <div class="hero-content">
-        <h1>Otto x Mike - Shipped Projects</h1>
-        <p class="subhead">Specification-driven builds shipped fast. Filter by category, inspect delivery metrics, and expand any card for architecture and pipeline context.</p>
-        <div class="stat-row">
-          <article class="stat-card">
-            <div class="stat-label">Total Projects</div>
-            <div class="stat-value" data-counter="totalProjects">0</div>
-          </article>
-          <article class="stat-card">
-            <div class="stat-label">Hours Saved</div>
-            <div class="stat-value" data-counter="hoursSaved">0</div>
-          </article>
-          <article class="stat-card">
-            <div class="stat-label">Avg Quality</div>
-            <div class="stat-value" data-counter="avgQuality">0</div>
-          </article>
-          <article class="stat-card">
-            <div class="stat-label">Total PRD Pages</div>
-            <div class="stat-value" data-counter="prdPages">0</div>
-          </article>
+  <div class="container">
+    <header>
+      <h1>🦦 Otto Project Showcase</h1>
+      <p class="subtitle">Built by AI. Orchestrated by humans. Powered by the Specification-Driven Pipeline.</p>
+      <div class="stats-bar">
+        <div class="stat"><div class="stat-value">16</div><div class="stat-label">Projects</div></div>
+        <div class="stat"><div class="stat-value">7</div><div class="stat-label">Complete</div></div>
+        <div class="stat"><div class="stat-value">96.5</div><div class="stat-label">AI Hours</div></div>
+        <div class="stat"><div class="stat-value">90%</div><div class="stat-label">Time Saved</div></div>
+      </div>
+    </header>
+    
+      <section class="category">
+        <h2>🤖 AI & Automation</h2>
+        <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🧠</span>
+            <div class="project-title-wrap">
+              <h3>AI-OS</h3>
+              <span class="tagline">Three-part AI Operating System</span>
+            </div>
+          </div>
+          <p class="description">Complete AI operating system with web dashboard (SvelteKit), autonomous task discovery engine, and overnight innovation layer. All interconnected via shared JSON state. Dashboard is the single source of truth for everything Otto does.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background: #22c55e"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #22c55e20; color: #22c55e">✅ Complete</span>
+            <span class="progress-text">100%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">SvelteKit</span><span class="tech">JSON</span><span class="tech">Node.js</span></div>
+          <div class="highlight">✨ 9.47/10 PRD score — 3 interconnected systems</div>
+          <div class="links"><a href="https://github.com/mikehelm/ai-os" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 8h AI time</span>
+            <span>👤 120h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">📊</span>
+            <div class="project-title-wrap">
+              <h3>Otto Dashboard v3</h3>
+              <span class="tagline">Native macOS menubar app for real-time Otto status</span>
+            </div>
+          </div>
+          <p class="description">SwiftUI menubar app showing live project status, model switching, refresh system, and full dashboard view. Auto-launches, kills duplicates, reads directly from filesystem JSON files.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 85%; background: #f59e0b"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #f59e0b20; color: #f59e0b">🔨 In Progress</span>
+            <span class="progress-text">85%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">Swift</span><span class="tech">SwiftUI</span><span class="tech">AppKit</span><span class="tech">NSStatusItem</span></div>
+          <div class="highlight">✨ Native macOS — model switching, real-time status</div>
+          
+          <div class="stats">
+            <span>⚡ 5h AI time</span>
+            <span>👤 60h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🎙️</span>
+            <div class="project-title-wrap">
+              <h3>Otto Voice</h3>
+              <span class="tagline">Real-time LAN voice conversation with Otto</span>
+            </div>
+          </div>
+          <p class="description">Full-duplex voice system using Faster-Whisper (STT) + Ollama/qwen3:32b (LLM) + Piper/Kokoro TTS on Windows PC with RTX 5090. WebSocket-based, settings UI, context bridge syncing knowledge from text Otto.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 80%; background: #f59e0b"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #f59e0b20; color: #f59e0b">🔨 In Progress</span>
+            <span class="progress-text">80%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">Python</span><span class="tech">FastAPI</span><span class="tech">WebSocket</span><span class="tech">Faster-Whisper</span><span class="tech">Kokoro TTS</span></div>
+          <div class="highlight">✨ RTX 5090 powered — dual TTS engines</div>
+          
+          <div class="stats">
+            <span>⚡ 12h AI time</span>
+            <span>👤 160h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🔍</span>
+            <div class="project-title-wrap">
+              <h3>Otto Audit Page</h3>
+              <span class="tagline">Live job submission and tracking for Otto</span>
+            </div>
+          </div>
+          <p class="description">Submit audit jobs from phone, watch them process in real-time. Cards show ⏳ Queued → 🔨 Working → ✅ Done. Panic undo button for rollbacks. Polls MCP server every 3 seconds.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background: #3b82f6"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #3b82f620; color: #3b82f6">🚀 Live</span>
+            <span class="progress-text">100%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">HTML/CSS/JS</span><span class="tech">MCP Server</span><span class="tech">GitHub Pages</span></div>
+          <div class="highlight">✨ Real-time job tracking from phone</div>
+          <div class="links"><a href="https://mikehelm.github.io/otto-audit/" target="_blank" class="link live">🚀 Live</a><a href="https://github.com/mikehelm/otto-audit" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 3h AI time</span>
+            <span>👤 24h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🔌</span>
+            <div class="project-title-wrap">
+              <h3>Otto MCP Server</h3>
+              <span class="tagline">ChatGPT ↔ Otto bridge via Model Context Protocol</span>
+            </div>
+          </div>
+          <p class="description">Custom JSON-RPC server connecting ChatGPT to Otto's automation pipeline. Cloudflare tunnel at otto.workwithchat.com. Handles task submission, status tracking, and CLI backend routing.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background: #22c55e"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #22c55e20; color: #22c55e">✅ Complete</span>
+            <span class="progress-text">100%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">Node.js</span><span class="tech">Express</span><span class="tech">Cloudflare Tunnel</span><span class="tech">JSON-RPC</span></div>
+          <div class="highlight">✨ First ChatGPT → Otto round-trip</div>
+          <div class="links"><a href="https://otto.workwithchat.com/mcp" target="_blank" class="link live">🚀 Live</a></div>
+          <div class="stats">
+            <span>⚡ 4h AI time</span>
+            <span>👤 30h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🖥️</span>
+            <div class="project-title-wrap">
+              <h3>Windows PC AI Workstation</h3>
+              <span class="tagline">RTX 5090 32GB AI workstation setup</span>
+            </div>
+          </div>
+          <p class="description">Full Windows PC setup for AI workloads: SSH access, Chrome CDP for browser automation, Ollama with qwen3:32b, Kokoro TTS on CPU. Next: WSL2 + Ubuntu, Codex CLI, PyTorch CUDA upgrade.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 75%; background: #f59e0b"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #f59e0b20; color: #f59e0b">🔨 In Progress</span>
+            <span class="progress-text">75%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">Windows 11</span><span class="tech">Ollama</span><span class="tech">Python</span><span class="tech">FastAPI</span></div>
+          <div class="highlight">✨ RTX 5090 32GB — LAN inference server</div>
+          
+          <div class="stats">
+            <span>⚡ 6h AI time</span>
+            <span>👤 40h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🏗️</span>
+            <div class="project-title-wrap">
+              <h3>Tiered Gateway Architecture</h3>
+              <span class="tagline">Local 70B primary + dynamic Opus escalation</span>
+            </div>
+          </div>
+          <p class="description">Mike's cost optimization design: local 70B Q4 handles 70-80% of traffic, Kimi 15-20%, Opus escalates for 5-10% complex tasks. Projected 60% Opus cost reduction. 33KB architecture plan.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 60%; background: #f59e0b"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #f59e0b20; color: #f59e0b">🔨 In Progress</span>
+            <span class="progress-text">60%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">Ollama</span><span class="tech">qwen3:32b</span><span class="tech">Architecture Design</span></div>
+          <div class="highlight">✨ 60% cost reduction target — 8.4/10 PRD</div>
+          
+          <div class="stats">
+            <span>⚡ 8h AI time</span>
+            <span>👤 60h equiv</span>
+          </div>
         </div>
       </div>
-    </section>
-
-    <section class="controls reveal">
-      <div class="filters" id="filters">
-        <button class="filter-btn active" data-category="creative">Creative</button>
-        <button class="filter-btn active" data-category="ai">AI Infra</button>
-        <button class="filter-btn active" data-category="web">Web Apps</button>
-        <button class="filter-btn active" data-category="showcase">Showcases</button>
-      </div>
-      <button class="toggle-btn" id="timelineToggle">Toggle Timeline View</button>
-    </section>
-
-    <section class="cards" id="cards"></section>
-    <section class="timeline" id="timeline"></section>
-
-    <footer class="reveal" id="statsFooter"></footer>
-  </main>
-
-  <script>
-    const projectData = {
-  "projects": [
-    {
-      "id": "ai-os",
-      "name": "AI-OS",
-      "emoji": "🧠",
-      "tagline": "Three-part AI Operating System",
-      "description": "Complete AI operating system with web dashboard (SvelteKit), autonomous task discovery engine, and overnight innovation layer. All interconnected via shared JSON state. Dashboard is the single source of truth for everything Otto does.",
-      "category": "ai",
-      "status": "complete",
-      "progress": 100,
-      "liveUrl": null,
-      "repoUrl": "https://github.com/mikehelm/ai-os",
-      "techStack": [
-        "SvelteKit",
-        "JSON",
-        "Node.js"
-      ],
-      "builtInHours": 8,
-      "humanEquivHours": 120,
-      "highlight": "9.47/10 PRD score — 3 interconnected systems",
-      "prdScore": 9.47,
-      "dateBuilt": "2026-02-15",
-      "visible": true
-    },
-    {
-      "id": "otto-dashboard-v3",
-      "name": "Otto Dashboard v3",
-      "emoji": "📊",
-      "tagline": "Native macOS menubar app for real-time Otto status",
-      "description": "SwiftUI menubar app showing live project status, model switching, refresh system, and full dashboard view. Auto-launches, kills duplicates, reads directly from filesystem JSON files.",
-      "category": "ai",
-      "status": "in-progress",
-      "progress": 85,
-      "liveUrl": null,
-      "repoUrl": null,
-      "techStack": [
-        "Swift",
-        "SwiftUI",
-        "AppKit",
-        "NSStatusItem"
-      ],
-      "builtInHours": 5,
-      "humanEquivHours": 60,
-      "highlight": "Native macOS — model switching, real-time status",
-      "dateBuilt": "2026-02-14",
-      "visible": true
-    },
-    {
-      "id": "otto-voice",
-      "name": "Otto Voice",
-      "emoji": "🎙️",
-      "tagline": "Real-time LAN voice conversation with Otto",
-      "description": "Full-duplex voice system using Faster-Whisper (STT) + Ollama/qwen3:32b (LLM) + Piper/Kokoro TTS on Windows PC with RTX 5090. WebSocket-based, settings UI, context bridge syncing knowledge from text Otto.",
-      "category": "ai",
-      "status": "in-progress",
-      "progress": 80,
-      "liveUrl": null,
-      "repoUrl": null,
-      "techStack": [
-        "Python",
-        "FastAPI",
-        "WebSocket",
-        "Faster-Whisper",
-        "Kokoro TTS"
-      ],
-      "builtInHours": 12,
-      "humanEquivHours": 160,
-      "highlight": "RTX 5090 powered — dual TTS engines",
-      "dateBuilt": "2026-02-15",
-      "visible": true
-    },
-    {
-      "id": "mindmapforge",
-      "name": "MindMapForge",
-      "emoji": "🗺️",
-      "tagline": "Voice-enabled mind maps with three TTS modes",
-      "description": "The first mind map that thinks back. Three voice modes (MOSS/Piper/OpenAI), intelligent auto-generation with ghost nodes, auto-layout switching, and voice commands. Outputs AI-ready super prompts. Top-of-funnel for Made With Chat.",
-      "category": "creative",
-      "status": "in-progress",
-      "progress": 72,
-      "liveUrl": null,
-      "repoUrl": "https://github.com/mikehelm/mindmapforge",
-      "techStack": [
-        "React",
-        "TypeScript",
-        "Canvas",
-        "Web Audio API"
-      ],
-      "builtInHours": 18,
-      "humanEquivHours": 200,
-      "highlight": "76KB unified PRD — intelligence engine",
-      "prdScore": 9.2,
-      "dateBuilt": "2026-02-13",
-      "visible": true
-    },
-    {
-      "id": "styleforge",
-      "name": "StyleForge",
-      "emoji": "🎨",
-      "tagline": "Interactive two-stage design system generator",
-      "description": "Professional design system tool: Stage 1 captures user preferences (colors, mood, industry), Stage 2 generates 5 personalized style directions with live previews and mix-and-match capabilities.",
-      "category": "creative",
-      "status": "paused",
-      "progress": 90,
-      "liveUrl": "https://mikehelm.github.io/style-forge/",
-      "repoUrl": "https://github.com/mikehelm/style-forge",
-      "techStack": [
-        "HTML/CSS/JS",
-        "GitHub Pages"
-      ],
-      "builtInHours": 4.5,
-      "humanEquivHours": 40,
-      "highlight": "Two-stage flow — 9/10 quality",
-      "dateBuilt": "2026-02-13",
-      "visible": true
-    },
-    {
-      "id": "tellanything",
-      "name": "TellAnything",
-      "emoji": "🤫",
-      "tagline": "Anonymous secrets sharing platform",
-      "description": "Full-featured anonymous confession platform with custom reaction system (🥱👎👍😱💬), threaded replies, Top 10 leaderboards with Today/Month/Year filters, provocative parallax hero, and dock magnification effect.",
-      "category": "web",
-      "status": "in-progress",
-      "progress": 85,
-      "liveUrl": "https://mikehelm.github.io/tellanything/",
-      "repoUrl": "https://github.com/mikehelm/tellanything",
-      "techStack": [
-        "HTML/CSS/JS",
-        "GitHub Pages"
-      ],
-      "builtInHours": 6,
-      "humanEquivHours": 80,
-      "highlight": "65 secrets + replies live",
-      "dateBuilt": "2026-02-14",
-      "visible": true
-    },
-    {
-      "id": "pipeline-showcase",
-      "name": "Pipeline Showcase",
-      "emoji": "⚡",
-      "tagline": "Visual showcase of the Specification-Driven Pipeline",
-      "description": "Animated SVG pipeline diagram with vertical trunk, review loop animation, traveling dots, score badges, and results panel. Compares our spec-driven approach with Serhii's /spawn-team pattern.",
-      "category": "showcase",
-      "status": "in-progress",
-      "progress": 75,
-      "liveUrl": "https://mikehelm.github.io/pipeline-showcase/",
-      "repoUrl": "https://github.com/mikehelm/pipeline-showcase",
-      "techStack": [
-        "HTML/CSS/SVG",
-        "GitHub Pages"
-      ],
-      "builtInHours": 2,
-      "humanEquivHours": 16,
-      "highlight": "Animated SVG pipeline with review loop",
-      "dateBuilt": "2026-02-15",
-      "visible": true
-    },
-    {
-      "id": "youtube-insights",
-      "name": "YouTube Insights",
-      "emoji": "📺",
-      "tagline": "YouTube watch history analysis dashboard",
-      "description": "Dark-themed dashboard with animated bar charts, video cards with thumbnails, donut charts, and fun facts. Analyzes 280 liked videos across 14 categories with AI-focused deep dive.",
-      "category": "showcase",
-      "status": "live",
-      "progress": 100,
-      "liveUrl": "https://mikehelm.github.io/youtube-insights/",
-      "repoUrl": "https://github.com/mikehelm/youtube-insights",
-      "techStack": [
-        "HTML/CSS/JS",
-        "YouTube Data API"
-      ],
-      "builtInHours": 2,
-      "humanEquivHours": 12,
-      "highlight": "280 videos analyzed — 14 categories",
-      "dateBuilt": "2026-02-16",
-      "visible": true
-    },
-    {
-      "id": "mwc-velocity",
-      "name": "MWC Velocity Report",
-      "emoji": "📈",
-      "tagline": "Go-to-market velocity tracking for Made With Chat",
-      "description": "Marketing velocity dashboard tracking content pipeline, social reach, competitor analysis, and launch readiness for the Made With Chat AI cofounder product.",
-      "category": "showcase",
-      "status": "live",
-      "progress": 100,
-      "liveUrl": "https://mikehelm.github.io/mwc-velocity-report/",
-      "repoUrl": "https://github.com/mikehelm/mwc-velocity-report",
-      "techStack": [
-        "HTML/CSS/JS",
-        "GitHub Pages"
-      ],
-      "builtInHours": 1.5,
-      "humanEquivHours": 10,
-      "highlight": "Full GTM velocity metrics",
-      "dateBuilt": "2026-02-12",
-      "visible": true
-    },
-    {
-      "id": "otto-audit",
-      "name": "Otto Audit Page",
-      "emoji": "🔍",
-      "tagline": "Live job submission and tracking for Otto",
-      "description": "Submit audit jobs from phone, watch them process in real-time. Cards show ⏳ Queued → 🔨 Working → ✅ Done. Panic undo button for rollbacks. Polls MCP server every 3 seconds.",
-      "category": "ai",
-      "status": "live",
-      "progress": 100,
-      "liveUrl": "https://mikehelm.github.io/otto-audit/",
-      "repoUrl": "https://github.com/mikehelm/otto-audit",
-      "techStack": [
-        "HTML/CSS/JS",
-        "MCP Server",
-        "GitHub Pages"
-      ],
-      "builtInHours": 3,
-      "humanEquivHours": 24,
-      "highlight": "Real-time job tracking from phone",
-      "dateBuilt": "2026-02-16",
-      "visible": true
-    },
-    {
-      "id": "mcp-server",
-      "name": "Otto MCP Server",
-      "emoji": "🔌",
-      "tagline": "ChatGPT ↔ Otto bridge via Model Context Protocol",
-      "description": "Custom JSON-RPC server connecting ChatGPT to Otto's automation pipeline. Cloudflare tunnel at otto.workwithchat.com. Handles task submission, status tracking, and CLI backend routing.",
-      "category": "ai",
-      "status": "live",
-      "progress": 100,
-      "liveUrl": "https://otto.workwithchat.com/mcp",
-      "repoUrl": null,
-      "techStack": [
-        "Node.js",
-        "Express",
-        "Cloudflare Tunnel",
-        "JSON-RPC"
-      ],
-      "builtInHours": 4,
-      "humanEquivHours": 30,
-      "highlight": "First ChatGPT → Otto round-trip",
-      "dateBuilt": "2026-02-13",
-      "visible": true
-    },
-    {
-      "id": "windows-pc-setup",
-      "name": "Windows PC AI Workstation",
-      "emoji": "🖥️",
-      "tagline": "RTX 5090 32GB AI workstation setup",
-      "description": "Full Windows PC setup for AI workloads: SSH access, Chrome CDP for browser automation, Ollama with qwen3:32b, Kokoro TTS on CPU. Next: WSL2 + Ubuntu, Codex CLI, PyTorch CUDA upgrade.",
-      "category": "ai",
-      "status": "in-progress",
-      "progress": 75,
-      "liveUrl": null,
-      "repoUrl": null,
-      "techStack": [
-        "Windows 11",
-        "Ollama",
-        "Python",
-        "FastAPI"
-      ],
-      "builtInHours": 6,
-      "humanEquivHours": 40,
-      "highlight": "RTX 5090 32GB — LAN inference server",
-      "dateBuilt": "2026-02-14",
-      "visible": true
-    },
-    {
-      "id": "youtube-api",
-      "name": "YouTube History Search",
-      "emoji": "🔎",
-      "tagline": "YouTube API with OAuth — history analysis",
-      "description": "Operational YouTube Data API v3 integration with OAuth. Analyzes 280 liked videos across 14 categories. Powers the YouTube Insights dashboard with AI-focused deep dive capabilities.",
-      "category": "showcase",
-      "status": "complete",
-      "progress": 100,
-      "liveUrl": null,
-      "repoUrl": null,
-      "techStack": [
-        "YouTube Data API",
-        "OAuth",
-        "Node.js"
-      ],
-      "builtInHours": 3,
-      "humanEquivHours": 20,
-      "highlight": "280 videos analyzed via API",
-      "dateBuilt": "2026-02-16",
-      "visible": true
-    },
-    {
-      "id": "tiered-gateway",
-      "name": "Tiered Gateway Architecture",
-      "emoji": "🏗️",
-      "tagline": "Local 70B primary + dynamic Opus escalation",
-      "description": "Mike's cost optimization design: local 70B Q4 handles 70-80% of traffic, Kimi 15-20%, Opus escalates for 5-10% complex tasks. Projected 60% Opus cost reduction. 33KB architecture plan.",
-      "category": "ai",
-      "status": "in-progress",
-      "progress": 60,
-      "liveUrl": null,
-      "repoUrl": null,
-      "techStack": [
-        "Ollama",
-        "qwen3:32b",
-        "Architecture Design"
-      ],
-      "builtInHours": 8,
-      "humanEquivHours": 60,
-      "highlight": "60% cost reduction target — 8.4/10 PRD",
-      "prdScore": 8.4,
-      "dateBuilt": "2026-02-17",
-      "visible": true
-    },
-    {
-      "id": "mwc-gtm",
-      "name": "Made With Chat GTM",
-      "emoji": "🚀",
-      "tagline": "Go-to-market strategy for AI cofounder product",
-      "description": "Full go-to-market strategy for Made With Chat — content pipeline, social reach, competitor analysis, launch readiness. $10K budget. Paused per Mike to finish other projects first.",
-      "category": "showcase",
-      "status": "paused",
-      "progress": 40,
-      "liveUrl": null,
-      "repoUrl": null,
-      "techStack": [
-        "Strategy",
-        "Marketing",
-        "GTM"
-      ],
-      "builtInHours": 12,
-      "humanEquivHours": 80,
-      "highlight": "$10K budget — stakes: upgrade or shutdown 😅",
-      "dateBuilt": "2026-02-12",
-      "visible": true
-    }
-  ],
-  "lastUpdated": "2026-02-17T04:30:00+07:00"
-};;
-
-    const categories = {
-      creative: "Creative Tools",
-      ai: "AI Infrastructure",
-      web: "Web Apps",
-      showcase: "Showcases"
-    };
-
-    const visibleProjects = projectData.projects.filter((p) => p.visible === true);
-    const activeCategories = new Set(["creative", "ai", "web", "showcase"]);
-
-    const cardsEl = document.getElementById("cards");
-    const timelineEl = document.getElementById("timeline");
-    const footerEl = document.getElementById("statsFooter");
-    const timelineToggle = document.getElementById("timelineToggle");
-
-    function formatStatus(status) {
-      if (status === "live") return "🟢 Live";
-      if (status === "in-progress") return "🟡 In Progress";
-      if (status === "research") return "🔵 Research";
-      return "⚪ Paused";
-    }
-
-    function savedPercent(project) {
-      if (!project.humanEquivHours || !project.builtInHours) return 0;
-      return Math.round((1 - project.builtInHours / project.humanEquivHours) * 100);
-    }
-
-    function deriveQuality(project) {
-      if (typeof project.prdScore === "number") return project.prdScore;
-      return 8 + project.progress / 100 * 1.4;
-    }
-
-    function estimatePrdPages(project) {
-      return Math.max(4, Math.round(project.techStack.length * 2 + project.description.length / 90));
-    }
-
-    function renderCards() {
-      const filtered = visibleProjects.filter((p) => activeCategories.has(p.category));
-
-      if (!filtered.length) {
-        cardsEl.innerHTML = '<div class="empty">No projects in the selected categories.</div>';
-        timelineEl.innerHTML = "";
-        updateFooter(filtered);
-        return;
-      }
-
-      cardsEl.innerHTML = filtered.map((project) => {
-        const saved = savedPercent(project);
-        return `
-          <article class="card cat-${project.category} reveal" data-id="${project.id}">
-            <div class="card-top">
-              <div>
-                <div class="title"><span>${project.emoji}</span><span>${project.name}</span></div>
-                <div class="tagline">${project.tagline}</div>
-              </div>
-              <span class="status ${project.status}">${formatStatus(project.status)}</span>
+      </section>
+    
+      <section class="category">
+        <h2>🎨 Creative Tools</h2>
+        <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🗺️</span>
+            <div class="project-title-wrap">
+              <h3>MindMapForge</h3>
+              <span class="tagline">Voice-enabled mind maps with three TTS modes</span>
             </div>
-
-            <p class="desc">${project.description}</p>
-
-            <div class="tech-row">
-              ${project.techStack.map((tech) => `<span class="tech">${tech}</span>`).join("")}
-            </div>
-
-            <div class="progress-wrap">
-              <div class="progress-meta">
-                <span>Completion</span>
-                <span>${project.progress}%</span>
-              </div>
-              <div class="progress"><span style="width:${project.progress}%"></span></div>
-            </div>
-
-            <div class="stats-row">
-              <span class="stat-pill">Built in ${project.builtInHours}h</span>
-              <span class="stat-pill">Saved ${saved}%</span>
-            </div>
-
-            <div class="highlight">${project.highlight}</div>
-
-            <div class="card-actions">
-              <a class="link-btn ${project.liveUrl ? "" : "disabled"}" href="${project.liveUrl || "#"}" target="_blank" rel="noreferrer noopener">Live URL</a>
-              <a class="link-btn ${project.repoUrl ? "" : "disabled"}" href="${project.repoUrl || "#"}" target="_blank" rel="noreferrer noopener">GitHub</a>
-            </div>
-
-            <section class="expand">
-              <div class="detail-label">Full Description</div>
-              <p class="detail-text">${project.description} This build ships as a production-grade slice with clear delivery milestones, measurable outcomes, and practical UX decisions that support real use at speed.</p>
-
-              <div class="detail-label">Architecture</div>
-              <p class="detail-text">Core stack: ${project.techStack.join(", ")}. Runtime boundaries are optimized for fast iteration and stable deployment with telemetry-friendly, modular components.</p>
-
-              <div class="detail-label">Pipeline</div>
-              <div class="pipeline">Research -> PRD -> Review -> Build -> QA -> Ship</div>
-            </section>
-          </article>
-        `;
-      }).join("");
-
-      renderTimeline(filtered);
-      updateFooter(filtered);
-      bindCards();
-      setupReveals();
-    }
-
-    function renderTimeline(projects) {
-      const sorted = [...projects].sort((a, b) => new Date(b.dateBuilt) - new Date(a.dateBuilt));
-      timelineEl.innerHTML = sorted.map((project) => `
-        <article class="time-item">
-          <div class="time-date">${project.dateBuilt}</div>
-          <div class="time-body">
-            <div class="time-title">${project.emoji} ${project.name} <span class="status ${project.status}" style="margin-left:6px; vertical-align:middle;">${formatStatus(project.status)}</span></div>
-            <div class="time-summary">${project.tagline} · Built in ${project.builtInHours}h · ${project.highlight}</div>
           </div>
-        </article>
-      `).join("");
-    }
-
-    function updateFooter(projects) {
-      const totalProjects = projects.length;
-      const builtHours = projects.reduce((sum, p) => sum + (p.builtInHours || 0), 0);
-      const humanHours = projects.reduce((sum, p) => sum + (p.humanEquivHours || 0), 0);
-      const savedHours = Math.max(0, Math.round(humanHours - builtHours));
-      const avgQuality = totalProjects ? (projects.reduce((sum, p) => sum + deriveQuality(p), 0) / totalProjects).toFixed(2) : "0.00";
-
-      footerEl.innerHTML = `
-        <div class="footer-cell"><div class="footer-k">Projects Shipped</div><div class="footer-v">${totalProjects}</div></div>
-        <div class="footer-cell"><div class="footer-k">Human-Equivalent Hours Saved</div><div class="footer-v">${savedHours}h</div></div>
-        <div class="footer-cell"><div class="footer-k">Average Quality Score</div><div class="footer-v">${avgQuality}/10</div></div>
-        <div class="footer-cell"><div class="footer-k">Pipeline</div><div class="footer-v"><a class="link-btn" href="https://mikehelm.github.io/pipeline-showcase/" target="_blank" rel="noreferrer noopener">Specification-Driven</a></div></div>
-      `;
-    }
-
-    function updateHeroStats() {
-      const projects = visibleProjects;
-      const totalProjects = projects.length;
-      const builtHours = projects.reduce((sum, p) => sum + (p.builtInHours || 0), 0);
-      const humanHours = projects.reduce((sum, p) => sum + (p.humanEquivHours || 0), 0);
-      const savedHours = Math.max(0, Math.round(humanHours - builtHours));
-      const avgQuality = projects.length ? projects.reduce((sum, p) => sum + deriveQuality(p), 0) / projects.length : 0;
-      const prdPages = projects.reduce((sum, p) => sum + estimatePrdPages(p), 0);
-
-      animateCounter("totalProjects", totalProjects, "");
-      animateCounter("hoursSaved", savedHours, "h");
-      animateCounter("avgQuality", Number(avgQuality.toFixed(2)), "/10", true);
-      animateCounter("prdPages", prdPages, "");
-    }
-
-    function animateCounter(name, target, suffix = "", decimal = false) {
-      const el = document.querySelector(`[data-counter=\"${name}\"]`);
-      if (!el) return;
-      const startAt = performance.now();
-      const duration = 1100;
-
-      function tick(now) {
-        const p = Math.min((now - startAt) / duration, 1);
-        const eased = 1 - Math.pow(1 - p, 3);
-        const value = target * eased;
-        const display = decimal ? value.toFixed(2) : Math.round(value).toString();
-        el.textContent = `${display}${suffix}`;
-        if (p < 1) requestAnimationFrame(tick);
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    function bindCards() {
-      cardsEl.querySelectorAll(".card").forEach((card) => {
-        card.addEventListener("click", (event) => {
-          const isLink = event.target.closest("a");
-          if (isLink) return;
-          card.classList.toggle("expanded");
-        });
-      });
-    }
-
-    function bindFilters() {
-      document.querySelectorAll(".filter-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const key = btn.dataset.category;
-          if (activeCategories.has(key)) {
-            if (activeCategories.size === 1) return;
-            activeCategories.delete(key);
-            btn.classList.remove("active");
-          } else {
-            activeCategories.add(key);
-            btn.classList.add("active");
-          }
-          renderCards();
-        });
-      });
-    }
-
-    function setupReveals() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.14 });
-
-      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-    }
-
-    timelineToggle.addEventListener("click", () => {
-      timelineEl.classList.toggle("visible");
-      timelineToggle.classList.toggle("active");
-    });
-
-    bindFilters();
-    renderCards();
-    updateHeroStats();
-    setupReveals();
-  </script>
+          <p class="description">The first mind map that thinks back. Three voice modes (MOSS/Piper/OpenAI), intelligent auto-generation with ghost nodes, auto-layout switching, and voice commands. Outputs AI-ready super prompts. Top-of-funnel for Made With Chat.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 75%; background: #f59e0b"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #f59e0b20; color: #f59e0b">🔨 In Progress</span>
+            <span class="progress-text">75%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">React</span><span class="tech">TypeScript</span><span class="tech">Canvas</span><span class="tech">Web Audio API</span></div>
+          <div class="highlight">✨ 76KB unified PRD — intelligence engine</div>
+          <div class="links"><a href="https://github.com/mikehelm/mindmapforge" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 18h AI time</span>
+            <span>👤 200h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🎨</span>
+            <div class="project-title-wrap">
+              <h3>StyleForge</h3>
+              <span class="tagline">Interactive two-stage design system generator</span>
+            </div>
+          </div>
+          <p class="description">Professional design system tool: Stage 1 captures user preferences (colors, mood, industry), Stage 2 generates 5 personalized style directions with live previews and mix-and-match capabilities.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 90%; background: #6b7280"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #6b728020; color: #6b7280">⏸️ Paused</span>
+            <span class="progress-text">90%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">HTML/CSS/JS</span><span class="tech">GitHub Pages</span></div>
+          <div class="highlight">✨ Two-stage flow — 9/10 quality</div>
+          <div class="links"><a href="https://mikehelm.github.io/style-forge/" target="_blank" class="link live">🚀 Live</a><a href="https://github.com/mikehelm/style-forge" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 4.5h AI time</span>
+            <span>👤 40h equiv</span>
+          </div>
+        </div>
+      </div>
+      </section>
+    
+      <section class="category">
+        <h2>🌐 Web Apps</h2>
+        <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🤫</span>
+            <div class="project-title-wrap">
+              <h3>TellAnything</h3>
+              <span class="tagline">Anonymous secrets sharing platform</span>
+            </div>
+          </div>
+          <p class="description">Full-featured anonymous confession platform with custom reaction system (🥱👎👍😱💬), threaded replies, Top 10 leaderboards with Today/Month/Year filters, provocative parallax hero, and dock magnification effect.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 85%; background: #f59e0b"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #f59e0b20; color: #f59e0b">🔨 In Progress</span>
+            <span class="progress-text">85%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">HTML/CSS/JS</span><span class="tech">GitHub Pages</span></div>
+          <div class="highlight">✨ 65 secrets + replies live</div>
+          <div class="links"><a href="https://mikehelm.github.io/tellanything/" target="_blank" class="link live">🚀 Live</a><a href="https://github.com/mikehelm/tellanything" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 6h AI time</span>
+            <span>👤 80h equiv</span>
+          </div>
+        </div>
+      </div>
+      </section>
+    
+      <section class="category">
+        <h2>✨ Showcase & Demos</h2>
+        <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">⚡</span>
+            <div class="project-title-wrap">
+              <h3>Pipeline Showcase</h3>
+              <span class="tagline">Visual showcase of the Specification-Driven Pipeline</span>
+            </div>
+          </div>
+          <p class="description">Animated SVG pipeline diagram with vertical trunk, review loop animation, traveling dots, score badges, and results panel. Compares our spec-driven approach with Serhii's /spawn-team pattern.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 75%; background: #f59e0b"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #f59e0b20; color: #f59e0b">🔨 In Progress</span>
+            <span class="progress-text">75%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">HTML/CSS/SVG</span><span class="tech">GitHub Pages</span></div>
+          <div class="highlight">✨ Animated SVG pipeline with review loop</div>
+          <div class="links"><a href="https://mikehelm.github.io/pipeline-showcase/" target="_blank" class="link live">🚀 Live</a><a href="https://github.com/mikehelm/pipeline-showcase" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 2h AI time</span>
+            <span>👤 16h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">📺</span>
+            <div class="project-title-wrap">
+              <h3>YouTube Insights</h3>
+              <span class="tagline">YouTube watch history analysis dashboard</span>
+            </div>
+          </div>
+          <p class="description">Dark-themed dashboard with animated bar charts, video cards with thumbnails, donut charts, and fun facts. Analyzes 280 liked videos across 14 categories with AI-focused deep dive.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background: #3b82f6"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #3b82f620; color: #3b82f6">🚀 Live</span>
+            <span class="progress-text">100%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">HTML/CSS/JS</span><span class="tech">YouTube Data API</span></div>
+          <div class="highlight">✨ 280 videos analyzed — 14 categories</div>
+          <div class="links"><a href="https://mikehelm.github.io/youtube-insights/" target="_blank" class="link live">🚀 Live</a><a href="https://github.com/mikehelm/youtube-insights" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 2h AI time</span>
+            <span>👤 12h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">📈</span>
+            <div class="project-title-wrap">
+              <h3>MWC Velocity Report</h3>
+              <span class="tagline">Go-to-market velocity tracking for Made With Chat</span>
+            </div>
+          </div>
+          <p class="description">Marketing velocity dashboard tracking content pipeline, social reach, competitor analysis, and launch readiness for the Made With Chat AI cofounder product.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background: #3b82f6"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #3b82f620; color: #3b82f6">🚀 Live</span>
+            <span class="progress-text">100%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">HTML/CSS/JS</span><span class="tech">GitHub Pages</span></div>
+          <div class="highlight">✨ Full GTM velocity metrics</div>
+          <div class="links"><a href="https://mikehelm.github.io/mwc-velocity-report/" target="_blank" class="link live">🚀 Live</a><a href="https://github.com/mikehelm/mwc-velocity-report" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 1.5h AI time</span>
+            <span>👤 10h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🔎</span>
+            <div class="project-title-wrap">
+              <h3>YouTube History Search</h3>
+              <span class="tagline">YouTube API with OAuth — history analysis</span>
+            </div>
+          </div>
+          <p class="description">Operational YouTube Data API v3 integration with OAuth. Analyzes 280 liked videos across 14 categories. Powers the YouTube Insights dashboard with AI-focused deep dive capabilities.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background: #22c55e"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #22c55e20; color: #22c55e">✅ Complete</span>
+            <span class="progress-text">100%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">YouTube Data API</span><span class="tech">OAuth</span><span class="tech">Node.js</span></div>
+          <div class="highlight">✨ 280 videos analyzed via API</div>
+          
+          <div class="stats">
+            <span>⚡ 3h AI time</span>
+            <span>👤 20h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">🚀</span>
+            <div class="project-title-wrap">
+              <h3>Made With Chat GTM</h3>
+              <span class="tagline">Go-to-market strategy for AI cofounder product</span>
+            </div>
+          </div>
+          <p class="description">Full go-to-market strategy for Made With Chat — content pipeline, social reach, competitor analysis, launch readiness. $10K budget. Paused per Mike to finish other projects first.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 40%; background: #6b7280"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #6b728020; color: #6b7280">⏸️ Paused</span>
+            <span class="progress-text">40%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">Strategy</span><span class="tech">Marketing</span><span class="tech">GTM</span></div>
+          <div class="highlight">✨ $10K budget — stakes: upgrade or shutdown 😅</div>
+          
+          <div class="stats">
+            <span>⚡ 12h AI time</span>
+            <span>👤 80h equiv</span>
+          </div>
+        </div>
+      
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-emoji">📈</span>
+            <div class="project-title-wrap">
+              <h3>MWC Velocity Report</h3>
+              <span class="tagline">Go-to-market velocity tracking for Made With Chat</span>
+            </div>
+          </div>
+          <p class="description">Marketing velocity dashboard tracking content pipeline, social reach, competitor analysis, and launch readiness for the Made With Chat AI cofounder product.</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background: #22c55e"></div>
+          </div>
+          <div class="project-meta">
+            <span class="status-badge" style="background: #22c55e20; color: #22c55e">✅ Complete</span>
+            <span class="progress-text">100%</span>
+          </div>
+          <div class="tech-stack"><span class="tech">HTML/CSS/JS</span><span class="tech">GitHub Pages</span></div>
+          <div class="highlight">✨ Full GTM velocity metrics</div>
+          <div class="links"><a href="https://mikehelm.github.io/mwc-velocity-report/" target="_blank" class="link live">🚀 Live</a><a href="https://github.com/mikehelm/mwc-velocity-report" target="_blank" class="link repo">📁 Repo</a></div>
+          <div class="stats">
+            <span>⚡ 1.5h AI time</span>
+            <span>👤 10h equiv</span>
+          </div>
+        </div>
+      </div>
+      </section>
+    
+    <footer>
+      <p>Built with ⚡ Opus plans → Codex codes</p>
+      <p class="last-updated">Last updated: 2/18/2026, 4:30:00 AM (Bangkok)</p>
+    </footer>
+  </div>
 </body>
 </html>

@@ -1,0 +1,27 @@
+{
+  "updates": [
+    {"id": "mindmapforge", "progress": 75},
+    {"id": "mcp-server", "status": "complete"}
+  ],
+  "add": [
+    {
+      "id": "velocity-report",
+      "name": "MWC Velocity Report",
+      "emoji": "📈",
+      "tagline": "Go-to-market velocity tracking for Made With Chat",
+      "description": "Marketing velocity dashboard tracking content pipeline, social reach, competitor analysis, and launch readiness for the Made With Chat AI cofounder product.",
+      "category": "showcase",
+      "status": "complete",
+      "progress": 100,
+      "liveUrl": "https://mikehelm.github.io/mwc-velocity-report/",
+      "repoUrl": "https://github.com/mikehelm/mwc-velocity-report",
+      "techStack": ["HTML/CSS/JS", "GitHub Pages"],
+      "builtInHours": 1.5,
+      "humanEquivHours": 10,
+      "highlight": "Full GTM velocity metrics",
+      "dateBuilt": "2026-02-12",
+      "visible": true
+    }
+  ],
+  "lastUpdated": "2026-02-18T04:30:00+07:00"
+}
